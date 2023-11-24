@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package com.pricticegui.lmts;
+package com.lmts;
 
 /**
  *
@@ -31,6 +31,7 @@ public class MainJFrame extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMinimumSize(new java.awt.Dimension(1020, 600));
 
         jPanel1.setLayout(new java.awt.CardLayout());
 
@@ -38,11 +39,11 @@ public class MainJFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 1020, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 600, Short.MAX_VALUE)
         );
 
         pack();
@@ -51,7 +52,7 @@ public class MainJFrame extends javax.swing.JFrame {
     private void customInitComponents() {
 
        jPanel1 = new javax.swing.JPanel();
-
+       setResizable(false);
        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
        
        java.awt.CardLayout cardLayout = new java.awt.CardLayout();
@@ -68,13 +69,17 @@ public class MainJFrame extends javax.swing.JFrame {
            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
        );
-       
+       //creating JPanel instance
        LoginJPanel loginJPanel = new LoginJPanel(cardLayout);
        SignUpJPanel signUpJPanel = new SignUpJPanel(cardLayout);
+       AdminDashboardJPanel adminDashboardJPanel = new AdminDashboardJPanel(cardLayout); 
+       
+       //adding jpanel to the main panel
        jPanel1.add(loginJPanel,"LoginJPanel");
        jPanel1.add(signUpJPanel,"SignUpJPanel");
+       jPanel1.add(adminDashboardJPanel,"AdminDashboardJPanel");
        
-       cardLayout.show(jPanel1, "LoginJPanel");
+       cardLayout.show(jPanel1, "AdminDashboardJPanel");
        pack();
    }                   
 
