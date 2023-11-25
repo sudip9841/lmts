@@ -52,7 +52,7 @@ public class MainJFrame extends javax.swing.JFrame {
     private void customInitComponents() {
 
        jPanel1 = new javax.swing.JPanel();
-       setResizable(false);
+//       setResizable(false);
        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
        
        java.awt.CardLayout cardLayout = new java.awt.CardLayout();
@@ -73,13 +73,15 @@ public class MainJFrame extends javax.swing.JFrame {
        LoginJPanel loginJPanel = new LoginJPanel(cardLayout);
        SignUpJPanel signUpJPanel = new SignUpJPanel(cardLayout);
        AdminDashboardJPanel adminDashboardJPanel = new AdminDashboardJPanel(cardLayout); 
+       HomeJPanel homeJPanel = new HomeJPanel(cardLayout);
        
        //adding jpanel to the main panel
        jPanel1.add(loginJPanel,"LoginJPanel");
        jPanel1.add(signUpJPanel,"SignUpJPanel");
        jPanel1.add(adminDashboardJPanel,"AdminDashboardJPanel");
+       jPanel1.add(homeJPanel,"HomeJPanel");
        
-       cardLayout.show(jPanel1, "AdminDashboardJPanel");
+       cardLayout.show(jPanel1, "LoginJPanel");
        pack();
    }                   
 

@@ -5,6 +5,7 @@
 package com.lmts;
 
 import java.awt.*;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -180,7 +181,7 @@ public class LoginJPanel extends javax.swing.JPanel {
     
     //signup button
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+        
         this.cardLayout.show(getParent(),"SignUpJPanel");
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -191,12 +192,36 @@ public class LoginJPanel extends javax.swing.JPanel {
     private void jPasswordField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswordField1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jPasswordField1ActionPerformed
-
+    
+    //login button
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        
+        String userName = this.jTextField1.getText();
+        String password = new String(this.jPasswordField1.getPassword());
+       
+        if(userName.equals("sudip") && password.equals("sudip")){
+//           LoginJPanel.showMessageDialog("Login Successful","Success",JOptionPane.INFORMATION_MESSAGE);
+           this.cardLayout.show(getParent(),"HomeJPanel");
+       }else{
+           LoginJPanel.showMessageDialog("Invalid Username or Password","Error",JOptionPane.ERROR_MESSAGE);
+       }
+       
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private static void showMessageDialog(String message, String title, int messageType) {
+        
+        // Get the root frame
+        Frame rootFrame = JOptionPane.getRootFrame();
 
+        // Center the root frame on the screen
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int x = (int) ((screenSize.getWidth() - rootFrame.getWidth()) / 2);
+        int y = (int) ((screenSize.getHeight() - rootFrame.getHeight()) / 2);
+        rootFrame.setLocation(x, y);
+
+      
+        JOptionPane.showMessageDialog(rootFrame, message, title, messageType);
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
