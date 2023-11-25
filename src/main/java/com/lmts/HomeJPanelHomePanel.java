@@ -4,18 +4,47 @@
  */
 package com.lmts;
 
+import com.lmts.Dao.UserDao;
+import com.lmts.helpers.DBUtils;
+import com.lmts.model.User;
+import com.lmts.service.UserService;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.List;
+
 /**
  *
  * @author sudip
  */
 public class HomeJPanelHomePanel extends javax.swing.JPanel {
-
+    private Connection con;
+    private UserService userService;
+    private UserDao userDao;
     /**
      * Creates new form HomeJPanelHomePanel
      */
     public HomeJPanelHomePanel() {
         initComponents();
+        try{
+            con = DBUtils.getDBConnection();
+            this.userDao = new UserDao(con);
+            this.userService = new UserService(this.userDao);
+        }catch(SQLException throwables){
+           throwables.printStackTrace();
+        }
     }
+    
+    private  void getUserList(){
+        List<User> userList = this.userService.getAllUsers();
+        for(User user : userList){
+            System.out.println("User ID: " + user.getId());
+            System.out.println("User Name: " + user.getUserName());
+            System.out.println("Password : " + user.getPassword());
+            System.out.println("Email: " + user.getEmail());
+            System.out.println("-------------");
+        }
+    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -27,8 +56,16 @@ public class HomeJPanelHomePanel extends javax.swing.JPanel {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
 
         jLabel1.setText("Home Panel");
+
+        jButton1.setText("Get Users");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -36,20 +73,30 @@ public class HomeJPanelHomePanel extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(471, 471, 471)
-                .addComponent(jLabel1)
-                .addContainerGap(484, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton1)
+                    .addComponent(jLabel1))
+                .addContainerGap(469, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(170, 170, 170)
                 .addComponent(jLabel1)
-                .addContainerGap(414, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton1)
+                .addContainerGap(380, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        this.getUserList();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 }

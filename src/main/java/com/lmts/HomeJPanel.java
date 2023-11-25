@@ -150,7 +150,7 @@ public class HomeJPanel extends javax.swing.JPanel {
         jLabel4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
         jLabel5.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
-        jLabel5.setText("My Ticket Rate");
+        jLabel5.setText("Ticket Rate");
         jLabel5.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -204,10 +204,10 @@ public class HomeJPanel extends javax.swing.JPanel {
         HomeJPanelTicketRatePanel homeJPanelTicketRatePanel = new HomeJPanelTicketRatePanel();
         
         
-        jLabel2.addMouseListener(new ClickListener(jPanel1));
-        jLabel3.addMouseListener(new ClickListener(jPanel1));
-        jLabel4.addMouseListener(new ClickListener(jPanel1));
-        jLabel5.addMouseListener(new ClickListener(jPanel1));
+        jLabel2.addMouseListener(new ClickListener(jPanel1, homePanelCardLayout));
+        jLabel3.addMouseListener(new ClickListener(jPanel1, homePanelCardLayout));
+        jLabel4.addMouseListener(new ClickListener(jPanel1, homePanelCardLayout));
+        jLabel5.addMouseListener(new ClickListener(jPanel1, homePanelCardLayout));
 
      
         jPanel1.add(homeJPanelHomePanel,"HomeJPanelHomePanel");
@@ -221,16 +221,34 @@ public class HomeJPanel extends javax.swing.JPanel {
     
     
     static class ClickListener implements MouseListener {
-        JPanel parentPanel;
+        private JPanel parentPanel;
+        private CardLayout homeCardLayout;
         
-        public ClickListener(JPanel jPanel){
-            parentPanel = jPanel;
+        public ClickListener(JPanel jPanel, CardLayout cardLayout){
+            this.parentPanel = jPanel;
+            this.homeCardLayout = cardLayout;
         }
         @Override
         public void mouseClicked(MouseEvent e) {
             // Get the source of the event, which is the clicked label
             JLabel clickedLabel = (JLabel) e.getSource();
-            System.out.println(clickedLabel.getText());
+            String text = clickedLabel.getText();
+            switch(text){
+                case "Home":
+                    this.homeCardLayout.show(parentPanel, "HomeJPanelHomePanel");
+                    break;
+                case "Music List":
+                    this.homeCardLayout.show(parentPanel, "HomeJPanelMusicListPanel");
+                    break;
+                case "My Ticket":
+                    this.homeCardLayout.show(parentPanel, "HomeJPanelMyTicketPanel");                    
+                    break;
+                case "Ticket Rate":
+                    this.homeCardLayout.show(parentPanel, "HomeJPanelTicketRatePanel");                    
+                    break;
+                default:
+                    this.homeCardLayout.show(parentPanel, "HomeJPanelHomePanel");
+            }
         }
 
         @Override
