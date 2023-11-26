@@ -4,8 +4,14 @@
  */
 package com.lmts;
 
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.BoxLayout;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.border.EmptyBorder;
 
 /**
  *
@@ -16,9 +22,24 @@ public class HomeJPanelMusicListPanel extends javax.swing.JPanel {
     /**
      * Creates new form HomeJPanelMusicListPanel
      */
+    private JPanel cardsPanel;
+    
     public HomeJPanelMusicListPanel() {
-//        initComponents();
-          this.customInitComponents();
+//          initComponents();
+            
+            setLayout(new BorderLayout());
+
+            // Create a panel to hold the cards
+            cardsPanel = new JPanel();
+            cardsPanel.setLayout(new BoxLayout(cardsPanel, BoxLayout.Y_AXIS));
+
+            // Add a JScrollPane to the cardsPanel
+            JScrollPane scrollPane = new JScrollPane(cardsPanel);
+            scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+
+            // Add the scroll pane to the layout
+            add(scrollPane, BorderLayout.CENTER);
+            this.customInitComponents();
     }
 
     /**
@@ -48,7 +69,7 @@ public class HomeJPanelMusicListPanel extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(428, 428, 428)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButton1)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(492, 492, 492))
@@ -69,8 +90,10 @@ public class HomeJPanelMusicListPanel extends javax.swing.JPanel {
         List<MusicListCardJPanel> musicCards = createMusicCards(); // Create a list of music cards
 
             for (MusicListCardJPanel musicCard : musicCards) {
-                System.out.println("Hello");
-                add(musicCard);
+                
+                this.cardsPanel.add(musicCard);
+                revalidate(); // Refresh the layout
+                repaint(); // Repaint the container
             }
         
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -78,7 +101,7 @@ public class HomeJPanelMusicListPanel extends javax.swing.JPanel {
     public void customInitComponents(){
          jLabel1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
-
+        
         jLabel1.setText("Music List Panel");
 
         jButton1.setText("get Music list");
@@ -88,26 +111,8 @@ public class HomeJPanelMusicListPanel extends javax.swing.JPanel {
             }
         });
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(428, 428, 428)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton1)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(492, 492, 492))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1)
-                .addContainerGap())
-        );
+        this.cardsPanel.add(jLabel1);
+        this.cardsPanel.add(jButton1);
     }
     
     private static List<MusicListCardJPanel> createMusicCards() {

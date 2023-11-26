@@ -1,19 +1,22 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
+
 package com.lmts;
 
+import com.lmts.Dao.UserDao;
+import com.lmts.helpers.DBUtils;
+import com.lmts.service.UserService;
+import com.lmts.shared.AlertMessageDialogBox;
 import java.awt.*;
-import javax.swing.JOptionPane;
+import java.sql.Connection;
+import java.sql.SQLException;
 
-/**
- *
- * @author sudip
- */
+
 public class LoginJPanel extends javax.swing.JPanel {
     
     private CardLayout cardLayout;
+    private UserService userService;
+    private UserDao userDao;
+    private Connection con;
+    
 
     /**
      * Creates new form LoginJPanel
@@ -22,6 +25,13 @@ public class LoginJPanel extends javax.swing.JPanel {
     public LoginJPanel(CardLayout cardLayout) {
         this.cardLayout = cardLayout;
         initComponents();
+        try{
+            con = DBUtils.getDBConnection();
+            this.userDao = new UserDao(con);
+            this.userService = new UserService(this.userDao);
+        }catch(SQLException throwables){
+           throwables.printStackTrace();
+        }
     }
 
     /**
@@ -198,30 +208,20 @@ public class LoginJPanel extends javax.swing.JPanel {
         
         String userName = this.jTextField1.getText();
         String password = new String(this.jPasswordField1.getPassword());
-       
-        if(userName.equals("sudip") && password.equals("sudip")){
-//           LoginJPanel.showMessageDialog("Login Successful","Success",JOptionPane.INFORMATION_MESSAGE);
-           this.cardLayout.show(getParent(),"HomeJPanel");
-       }else{
-           LoginJPanel.showMessageDialog("Invalid Username or Password","Error",JOptionPane.ERROR_MESSAGE);
-       }
+        
+        if(userName.isEmpty() || password.isEmpty()){
+            AlertMessageDialogBox.showAlert("Please enter both Username and Password", "Blank Input", HEIGHT);
+        }else{
+            boolean isValidUser = this.userService.isValidCredentials(userName, password);
+            if(isValidUser){
+                this.cardLayout.show(getParent(), "HomeJPanel");
+            }else{
+                AlertMessageDialogBox.showWarning("Invalid Username or Password", "Incorrect Credentials");
+            }
+        }
        
     }//GEN-LAST:event_jButton1ActionPerformed
-
-    private static void showMessageDialog(String message, String title, int messageType) {
-        
-        // Get the root frame
-        Frame rootFrame = JOptionPane.getRootFrame();
-
-        // Center the root frame on the screen
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        int x = (int) ((screenSize.getWidth() - rootFrame.getWidth()) / 2);
-        int y = (int) ((screenSize.getHeight() - rootFrame.getHeight()) / 2);
-        rootFrame.setLocation(x, y);
-
-      
-        JOptionPane.showMessageDialog(rootFrame, message, title, messageType);
-    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;

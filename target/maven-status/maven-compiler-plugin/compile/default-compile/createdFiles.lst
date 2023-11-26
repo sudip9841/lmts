@@ -21,6 +21,7 @@ com\lmts\SignUpJPanel$2.class
 com\lmts\Dao\UserDao.class
 com\lmts\LoginJPanel$4.class
 com\lmts\LoginJPanel$2.class
+com\lmts\shared\AlertMessageDialogBox.class
 com\lmts\HomeJPanel$ClickListener.class
 com\lmts\HomeJPanelTicketRatePanel.class
 com\lmts\SignUpJPanel$4.class

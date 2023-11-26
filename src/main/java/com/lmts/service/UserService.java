@@ -20,4 +20,12 @@ public class UserService {
     public List<User> getAllUsers() {
         return userDao.getAllUsers();
     }
+    
+    public void addtUser(String userName, String email, String password){
+        this.userDao.addUser(userName,email,password);
+    }
+    
+    public boolean isValidCredentials(String username, String password) {
+       return this.userDao.isValidCredentials(username, password);
+    }
 }
