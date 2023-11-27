@@ -4,7 +4,10 @@
  */
 package com.lmts;
 
+import com.lmts.service.UserService;
+import com.lmts.shared.AlertMessageDialogBox;
 import java.awt.*;
+import java.util.regex.Pattern;
 
 /**
  *
@@ -13,12 +16,14 @@ import java.awt.*;
 public class SignUpJPanel extends javax.swing.JPanel {
     
     private CardLayout cardLayout;
+    private UserService userService;
     /**
      * Creates new form SignUpJPanel
      * @param cardLayout
      */
     public SignUpJPanel(CardLayout cardLayout) {
         this.cardLayout = cardLayout;
+        this.userService = new UserService();
         initComponents();
     }
 
@@ -72,6 +77,7 @@ public class SignUpJPanel extends javax.swing.JPanel {
         jButton1.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
         jButton1.setText("Sign up");
+        jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -220,9 +226,56 @@ public class SignUpJPanel extends javax.swing.JPanel {
     private void jPasswordField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswordField1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jPasswordField1ActionPerformed
-
+    
+    private boolean isValidEmail(String email) {
+        String emailRegex = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,}$";
+        return Pattern.matches(emailRegex, email);
+    }
+    
+    private void resetFieldVlue(){
+        this.jTextField1.setText("");
+        this.jTextField2.setText("");
+        this.jPasswordField1.setText("");
+        this.jPasswordField2.setText("");
+    }
+    //signup button
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        String userName = this.jTextField1.getText();
+        String email = this.jTextField2.getText();
+        String password1 = new String(this.jPasswordField1.getPassword());
+        String password2 = new String(this.jPasswordField2.getPassword());
+        
+        // Check if all fields are entered
+        if (userName.isEmpty() || email.isEmpty() || password1.isEmpty() || password2.isEmpty()) {
+           AlertMessageDialogBox.showError("All fields must be entered.","Empty Field");
+            return;
+        }
+
+        // Check if the email is valid
+        if (!isValidEmail(email)) {
+           AlertMessageDialogBox.showError("Entered email is invalid.","Invalid");
+            return;
+        }
+
+        // Check if password1 and password2 are the same
+        if (!password1.equals(password2)) {
+           AlertMessageDialogBox.showError("Passwords do not match.","Password Mismatch");
+           return;
+        }
+        
+        if(password1.length()<6){
+            AlertMessageDialogBox.showError("Password must be at least six characters long.","Error");
+            return;
+        }
+        
+        boolean isSuccess = this.userService.addtUser(userName, email, password1);
+        if(isSuccess){
+          this.resetFieldVlue();
+          AlertMessageDialogBox.showInfo("User registered sucessfully.", "Success");
+        }
+
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jPasswordField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswordField2ActionPerformed

@@ -13,16 +13,16 @@ public class UserService {
      private UserDao userDao;
 
     // Constructor
-    public UserService(UserDao userDao) {
-        this.userDao = userDao;
+    public UserService() {
+        this.userDao = new UserDao();
     }
     
     public List<User> getAllUsers() {
         return userDao.getAllUsers();
     }
     
-    public void addtUser(String userName, String email, String password){
-        this.userDao.addUser(userName,email,password);
+    public boolean addtUser(String userName, String email, String password){
+        return this.userDao.addUser(userName,email,password);
     }
     
     public boolean isValidCredentials(String username, String password) {

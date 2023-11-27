@@ -1,21 +1,16 @@
 
 package com.lmts;
 
-import com.lmts.Dao.UserDao;
-import com.lmts.helpers.DBUtils;
+
 import com.lmts.service.UserService;
 import com.lmts.shared.AlertMessageDialogBox;
 import java.awt.*;
-import java.sql.Connection;
-import java.sql.SQLException;
 
 
 public class LoginJPanel extends javax.swing.JPanel {
     
     private CardLayout cardLayout;
     private UserService userService;
-    private UserDao userDao;
-    private Connection con;
     
 
     /**
@@ -25,13 +20,8 @@ public class LoginJPanel extends javax.swing.JPanel {
     public LoginJPanel(CardLayout cardLayout) {
         this.cardLayout = cardLayout;
         initComponents();
-        try{
-            con = DBUtils.getDBConnection();
-            this.userDao = new UserDao(con);
-            this.userService = new UserService(this.userDao);
-        }catch(SQLException throwables){
-           throwables.printStackTrace();
-        }
+        this.userService = new UserService();
+       
     }
 
     /**
@@ -127,6 +117,7 @@ public class LoginJPanel extends javax.swing.JPanel {
         jButton1.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
         jButton1.setText("Login");
+        jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);

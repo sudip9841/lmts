@@ -17,21 +17,14 @@ import java.util.List;
  * @author sudip
  */
 public class HomeJPanelHomePanel extends javax.swing.JPanel {
-    private Connection con;
     private UserService userService;
-    private UserDao userDao;
     /**
      * Creates new form HomeJPanelHomePanel
      */
     public HomeJPanelHomePanel() {
         initComponents();
-        try{
-            con = DBUtils.getDBConnection();
-            this.userDao = new UserDao(con);
-            this.userService = new UserService(this.userDao);
-        }catch(SQLException throwables){
-           throwables.printStackTrace();
-        }
+        this.userService = new UserService();
+       
     }
     
     private  void getUserList(){
