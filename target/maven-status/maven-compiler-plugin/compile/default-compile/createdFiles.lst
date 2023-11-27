@@ -6,6 +6,7 @@ com\lmts\SignUpJPanel$6.class
 com\lmts\service\UserService.class
 com\lmts\LoginJPanel$3.class
 com\lmts\SignUpJPanel$1.class
+com\lmts\shared\UserDetailsSingleton.class
 com\lmts\HomeJPanelMusicListPanel$1.class
 com\lmts\SignUpJPanel$5.class
 com\lmts\HomeJPanel.class

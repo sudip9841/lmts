@@ -8,6 +8,7 @@ import com.lmts.helpers.DBUtils;
 import com.lmts.model.User;
 import com.lmts.service.UserService;
 import com.lmts.shared.AlertMessageDialogBox;
+import com.lmts.shared.UserDetailsSingleton;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -92,7 +93,26 @@ public class UserDao {
                 preparedStatement.setString(1, username);
                 preparedStatement.setString(2, password);
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                    return resultSet.next(); // If any row is returned, credentials are valid
+                     if (resultSet.next()) {
+                        // If any row is returned, credentials are valid
+                        
+                        int userId = resultSet.getInt("id");
+                        String userName = resultSet.getString("user_name");
+                        String userEmail = resultSet.getString("email");
+                        int role = resultSet.getInt("role_type");
+                        
+
+                        // Save user details in UserDetailsSingleton
+                        UserDetailsSingleton userDetails = UserDetailsSingleton.getInstance();
+                        userDetails.setUserId(userId);
+                        userDetails.setUsername(userName);
+                        userDetails.setEmail(userEmail);
+                        userDetails.setRole(role);
+
+                        return true;
+                    } else {
+                        return false;
+                    }
                 }
             }
         } catch (SQLException e) {

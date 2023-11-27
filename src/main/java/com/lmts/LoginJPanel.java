@@ -4,6 +4,7 @@ package com.lmts;
 
 import com.lmts.service.UserService;
 import com.lmts.shared.AlertMessageDialogBox;
+import com.lmts.shared.UserDetailsSingleton;
 import java.awt.*;
 
 
@@ -205,6 +206,18 @@ public class LoginJPanel extends javax.swing.JPanel {
         }else{
             boolean isValidUser = this.userService.isValidCredentials(userName, password);
             if(isValidUser){
+                UserDetailsSingleton userDetails = UserDetailsSingleton.getInstance();
+                
+                // Use the user details as needed
+                System.out.println("User ID: " + userDetails.getUserId());
+                System.out.println("Username: " + userDetails.getUserName());
+                System.out.println("User Email: " + userDetails.getEmail());
+                System.out.println("Role: "+ userDetails.getRole());
+                        
+                if(userDetails.getRole()==1){
+                    this.cardLayout.show(getParent(),"AdminDashboardJPanel");
+                    return;
+                }
                 this.cardLayout.show(getParent(), "HomeJPanel");
             }else{
                 AlertMessageDialogBox.showWarning("Invalid Username or Password", "Incorrect Credentials");
