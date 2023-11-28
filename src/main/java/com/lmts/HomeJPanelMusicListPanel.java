@@ -40,6 +40,14 @@ public class HomeJPanelMusicListPanel extends javax.swing.JPanel {
             // Add the scroll pane to the layout
             add(scrollPane, BorderLayout.CENTER);
             this.customInitComponents();
+            List<MusicListCardJPanel> musicCards = createMusicCards(); // Create a list of music cards
+
+            for (MusicListCardJPanel musicCard : musicCards) {
+                
+                this.cardsPanel.add(musicCard);
+                revalidate(); // Refresh the layout
+                repaint(); // Repaint the container
+            }
     }
 
     /**
@@ -81,7 +89,7 @@ public class HomeJPanelMusicListPanel extends javax.swing.JPanel {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton1)
-                .addContainerGap())
+                .addContainerGap(550, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
