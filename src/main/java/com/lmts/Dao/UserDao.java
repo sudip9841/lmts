@@ -1,12 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package com.lmts.Dao;
 
 import com.lmts.helpers.DBUtils;
 import com.lmts.model.User;
-import com.lmts.service.UserService;
 import com.lmts.shared.AlertMessageDialogBox;
 import com.lmts.shared.UserDetailsSingleton;
 import java.sql.Connection;
@@ -17,10 +13,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author sudip
- */
+
 public class UserDao {
     private Connection con;
     
@@ -82,52 +75,38 @@ public class UserDao {
     }
     
     public boolean isValidCredentials(String username, String password) {
+    try {
+        // No need to declare a separate connection; use the class-level connection
+        String query = "SELECT * FROM user WHERE user_name = ? AND password = ?";
+        try (PreparedStatement preparedStatement = con.prepareStatement(query)) {
+            preparedStatement.setString(1, username);
+            preparedStatement.setString(2, password);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    int userId = resultSet.getInt("id");
+                    String userName = resultSet.getString("user_name");
+                    String userEmail = resultSet.getString("email");
+                    int role = resultSet.getInt("role_type");
 
-       Connection connection = null;
-        try {
-            connection = con;
+                    // Save user details in UserDetailsSingleton
+                    UserDetailsSingleton userDetails = UserDetailsSingleton.getInstance();
+                    userDetails.setUserId(userId);
+                    userDetails.setUsername(userName);
+                    userDetails.setEmail(userEmail);
+                    userDetails.setRole(role);
 
-            // Query to check if the username and password match
-            String query = "SELECT * FROM user WHERE user_name = ? AND password = ?";
-            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-                preparedStatement.setString(1, username);
-                preparedStatement.setString(2, password);
-                try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                     if (resultSet.next()) {
-                        // If any row is returned, credentials are valid
-                        
-                        int userId = resultSet.getInt("id");
-                        String userName = resultSet.getString("user_name");
-                        String userEmail = resultSet.getString("email");
-                        int role = resultSet.getInt("role_type");
-                        
-
-                        // Save user details in UserDetailsSingleton
-                        UserDetailsSingleton userDetails = UserDetailsSingleton.getInstance();
-                        userDetails.setUserId(userId);
-                        userDetails.setUsername(userName);
-                        userDetails.setEmail(userEmail);
-                        userDetails.setRole(role);
-
-                        return true;
-                    } else {
-                        return false;
-                    }
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            // Handle the exception and display an error message
-            return false;
-        } finally {
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
+                    return true;
+                } else {
+                    return false;
                 }
             }
         }
+    } catch (SQLException e) {
+        e.printStackTrace();
+        // Handle the exception and display an error message
+        return false;
     }
+}
+
     
 }
