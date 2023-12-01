@@ -13,12 +13,11 @@ public class MusicListCardJPanel extends javax.swing.JPanel {
     /**
      * Creates new form MusicListCardJPanel
      */
-    public MusicListCardJPanel(String musicName, String runTime, String categories, String venu) {
+    public MusicListCardJPanel(String musicName, String runTime) {
         initComponents();
         this.jLabel1.setText(musicName);
         this.jLabel3.setText(runTime);
-        this.jLabel5.setText(categories);
-        this.jLabel7.setText(venu);
+        
     }
 
     /**

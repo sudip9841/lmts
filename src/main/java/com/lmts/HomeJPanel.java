@@ -198,7 +198,6 @@ public class HomeJPanel extends javax.swing.JPanel {
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         
-        HomeJPanelHomePanel homeJPanelHomePanel = new HomeJPanelHomePanel();
         HomeJPanelMusicListPanel homeJPanelMusicListPanel = new HomeJPanelMusicListPanel();
         HomeJPanelMyTicketPanel homeJPanelMyTicketPanel = new HomeJPanelMyTicketPanel();
         HomeJPanelTicketRatePanel homeJPanelTicketRatePanel = new HomeJPanelTicketRatePanel();
@@ -210,13 +209,12 @@ public class HomeJPanel extends javax.swing.JPanel {
         jLabel5.addMouseListener(new ClickListener(jPanel1, homePanelCardLayout));
 
      
-        jPanel1.add(homeJPanelHomePanel,"HomeJPanelHomePanel");
         jPanel1.add(homeJPanelMusicListPanel,"HomeJPanelMusicListPanel");
         jPanel1.add(homeJPanelMyTicketPanel,"HomeJPanelMyTicketPanel");
         jPanel1.add(homeJPanelTicketRatePanel,"HomeJPanelTicketRatePanel");
 
         
-        homePanelCardLayout.show(jPanel1,"HomeJPanelHomePanel");
+        homePanelCardLayout.show(jPanel1,"HomeJPanelMusicListPanel");
     }   
     
     
@@ -234,9 +232,6 @@ public class HomeJPanel extends javax.swing.JPanel {
             JLabel clickedLabel = (JLabel) e.getSource();
             String text = clickedLabel.getText();
             switch(text){
-                case "Home":
-                    this.homeCardLayout.show(parentPanel, "HomeJPanelHomePanel");
-                    break;
                 case "Music List":
                     this.homeCardLayout.show(parentPanel, "HomeJPanelMusicListPanel");
                     break;

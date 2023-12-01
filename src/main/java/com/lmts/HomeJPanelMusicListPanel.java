@@ -1,17 +1,15 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
+
 package com.lmts;
 
+import com.lmts.model.MusicModel;
+import com.lmts.service.MusicService;
 import java.awt.BorderLayout;
-import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.border.EmptyBorder;
+
 
 /**
  *
@@ -23,10 +21,11 @@ public class HomeJPanelMusicListPanel extends javax.swing.JPanel {
      * Creates new form HomeJPanelMusicListPanel
      */
     private JPanel cardsPanel;
+    private static MusicService musicService;
     
     public HomeJPanelMusicListPanel() {
 //          initComponents();
-            
+            HomeJPanelMusicListPanel.musicService = new MusicService();
             setLayout(new BorderLayout());
 
             // Create a panel to hold the cards
@@ -40,6 +39,7 @@ public class HomeJPanelMusicListPanel extends javax.swing.JPanel {
             // Add the scroll pane to the layout
             add(scrollPane, BorderLayout.CENTER);
             this.customInitComponents();
+            
             List<MusicListCardJPanel> musicCards = createMusicCards(); // Create a list of music cards
 
             for (MusicListCardJPanel musicCard : musicCards) {
@@ -59,81 +59,29 @@ public class HomeJPanelMusicListPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-
-        jLabel1.setText("Music List Panel");
-
-        jButton1.setText("get Music list");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(428, 428, 428)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(492, 492, 492))
+            .addGap(0, 1020, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1)
-                .addContainerGap(550, Short.MAX_VALUE))
+            .addGap(0, 600, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        List<MusicListCardJPanel> musicCards = createMusicCards(); // Create a list of music cards
-
-            for (MusicListCardJPanel musicCard : musicCards) {
-                
-                this.cardsPanel.add(musicCard);
-                revalidate(); // Refresh the layout
-                repaint(); // Repaint the container
-            }
-        
-    }//GEN-LAST:event_jButton1ActionPerformed
     
     public void customInitComponents(){
-         jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        
-        jLabel1.setText("Music List Panel");
-
-        jButton1.setText("get Music list");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
-        this.cardsPanel.add(jLabel1);
-        this.cardsPanel.add(jButton1);
+       
     }
     
     private static List<MusicListCardJPanel> createMusicCards() {
         List<MusicListCardJPanel> musicCards = new ArrayList<>();
-
-        // Example music details (you can replace this with your actual data)
-        String[] musicNames = {"passenger: let it go", "Ed Sheeran: photograph", "Taylor Swift: Love strory"};
-        String[] runTime = {"2hr 1min", "4hrs 30min", "2hr 2min"};
-        String[] categories = {"love and breakup", "memories category","love story category"};
-        String[] venue = {"London, England","Greenwich, England", "West London, England"};
-
-        for (int i = 0; i < musicNames.length; i++) {
-            MusicListCardJPanel musicCard = new MusicListCardJPanel(musicNames[i], runTime[i], categories[i], venue[i]);
+        
+        List<MusicModel> musicList = HomeJPanelMusicListPanel.musicService.getALlMusicList();
+        
+        for(MusicModel music:musicList){
+            MusicListCardJPanel musicCard = new MusicListCardJPanel(music.getMusicName(), music.getTime());
             musicCards.add(musicCard);
         }
 
@@ -141,7 +89,5 @@ public class HomeJPanelMusicListPanel extends javax.swing.JPanel {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 }
