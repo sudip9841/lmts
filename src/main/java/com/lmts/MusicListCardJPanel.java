@@ -1,23 +1,31 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
+
 package com.lmts;
 
-/**
- *
- * @author sudip
- */
+import com.lmts.shared.AlertMessageDialogBox;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+
 public class MusicListCardJPanel extends javax.swing.JPanel {
 
     /**
      * Creates new form MusicListCardJPanel
      */
-    public MusicListCardJPanel(String musicName, String runTime) {
+    public MusicListCardJPanel(String musicName, String showTime, String date, int availableTicket, String description) {
         initComponents();
         this.jLabel1.setText(musicName);
-        this.jLabel3.setText(runTime);
+        this.jLabel3.setText(showTime);
+        this.jLabel5.setText(date);
+        this.jLabel7.setText( String.valueOf(availableTicket));
+        this.jLabel9.setText(description);
         
+        // Add a mouse listener to handle click events
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                AlertMessageDialogBox.showInfo(date,"Info");
+            }
+        });
     }
 
     /**
@@ -36,22 +44,28 @@ public class MusicListCardJPanel extends javax.swing.JPanel {
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
 
-        setBackground(new java.awt.Color(179, 179, 179));
+        setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel1.setText("The Lion King");
 
-        jLabel2.setText("Run time: ");
+        jLabel2.setText("Show Time: ");
 
         jLabel3.setText("2 hrs 30 min");
 
-        jLabel4.setText("Categories:");
+        jLabel4.setText("Date:");
 
-        jLabel5.setText("Rhythm and blues, Hip Hop, Classical music");
+        jLabel5.setText("2022-12-12");
 
-        jLabel6.setText("Venu:");
+        jLabel6.setText("Available Ticket:");
 
-        jLabel7.setText("London, England");
+        jLabel7.setText("50");
+
+        jLabel8.setText("Description");
+
+        jLabel9.setText("description");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -65,13 +79,15 @@ public class MusicListCardJPanel extends javax.swing.JPanel {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel4)
                             .addComponent(jLabel2)
-                            .addComponent(jLabel6))
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel8))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel9)
                             .addComponent(jLabel3)
                             .addComponent(jLabel5)
                             .addComponent(jLabel7))))
-                .addContainerGap(122, Short.MAX_VALUE))
+                .addContainerGap(406, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -90,7 +106,11 @@ public class MusicListCardJPanel extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6))
-                .addContainerGap(40, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8)
+                    .addComponent(jLabel9))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -103,5 +123,7 @@ public class MusicListCardJPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     // End of variables declaration//GEN-END:variables
 }

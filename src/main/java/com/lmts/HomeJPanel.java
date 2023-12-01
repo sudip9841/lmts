@@ -36,7 +36,6 @@ public class HomeJPanel extends javax.swing.JPanel {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
@@ -50,10 +49,6 @@ public class HomeJPanel extends javax.swing.JPanel {
         jLabel1.setFont(new java.awt.Font("Arial Rounded MT Bold", 1, 36)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(18, 18, 18));
         jLabel1.setText("LMTS");
-
-        jLabel2.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
-        jLabel2.setText("Home");
-        jLabel2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
         jLabel3.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         jLabel3.setText("Music List");
@@ -74,9 +69,7 @@ public class HomeJPanel extends javax.swing.JPanel {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(34, 34, 34)
                 .addComponent(jLabel1)
-                .addGap(197, 197, 197)
-                .addComponent(jLabel2)
-                .addGap(38, 38, 38)
+                .addGap(285, 285, 285)
                 .addComponent(jLabel3)
                 .addGap(39, 39, 39)
                 .addComponent(jLabel4)
@@ -90,7 +83,6 @@ public class HomeJPanel extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jLabel2)
                     .addComponent(jLabel3)
                     .addComponent(jLabel4)
                     .addComponent(jLabel5))
@@ -119,7 +111,6 @@ public class HomeJPanel extends javax.swing.JPanel {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
@@ -137,9 +128,6 @@ public class HomeJPanel extends javax.swing.JPanel {
         jLabel1.setForeground(new java.awt.Color(18, 18, 18));
         jLabel1.setText("LMTS");
 
-        jLabel2.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
-        jLabel2.setText("Home");
-        jLabel2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
         jLabel3.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         jLabel3.setText("Music List");
@@ -161,7 +149,6 @@ public class HomeJPanel extends javax.swing.JPanel {
                 .addGap(34, 34, 34)
                 .addComponent(jLabel1)
                 .addGap(197, 197, 197)
-                .addComponent(jLabel2)
                 .addGap(38, 38, 38)
                 .addComponent(jLabel3)
                 .addGap(39, 39, 39)
@@ -176,7 +163,6 @@ public class HomeJPanel extends javax.swing.JPanel {
                 .addContainerGap(31, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jLabel2)
                     .addComponent(jLabel3)
                     .addComponent(jLabel4)
                     .addComponent(jLabel5))
@@ -203,7 +189,6 @@ public class HomeJPanel extends javax.swing.JPanel {
         HomeJPanelTicketRatePanel homeJPanelTicketRatePanel = new HomeJPanelTicketRatePanel();
         
         
-        jLabel2.addMouseListener(new ClickListener(jPanel1, homePanelCardLayout));
         jLabel3.addMouseListener(new ClickListener(jPanel1, homePanelCardLayout));
         jLabel4.addMouseListener(new ClickListener(jPanel1, homePanelCardLayout));
         jLabel5.addMouseListener(new ClickListener(jPanel1, homePanelCardLayout));
@@ -269,7 +254,6 @@ public class HomeJPanel extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;

@@ -10,6 +10,7 @@ com\lmts\SignUpJPanel$1.class
 com\lmts\shared\UserDetailsSingleton.class
 com\lmts\SignUpJPanel$5.class
 com\lmts\Dao\MusicDao.class
+com\lmts\MusicListCardJPanel$1.class
 com\lmts\HomeJPanel.class
 com\lmts\HomeJPanelMyTicketPanel.class
 com\lmts\LoginJPanel$1.class

@@ -11,10 +11,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 
-/**
- *
- * @author sudip
- */
 public class HomeJPanelMusicListPanel extends javax.swing.JPanel {
 
     /**
@@ -24,7 +20,7 @@ public class HomeJPanelMusicListPanel extends javax.swing.JPanel {
     private static MusicService musicService;
     
     public HomeJPanelMusicListPanel() {
-//          initComponents();
+          initComponents();
             HomeJPanelMusicListPanel.musicService = new MusicService();
             setLayout(new BorderLayout());
 
@@ -38,16 +34,9 @@ public class HomeJPanelMusicListPanel extends javax.swing.JPanel {
 
             // Add the scroll pane to the layout
             add(scrollPane, BorderLayout.CENTER);
-            this.customInitComponents();
+//            this.customInitComponents();
+            this.addMusciCardList();
             
-            List<MusicListCardJPanel> musicCards = createMusicCards(); // Create a list of music cards
-
-            for (MusicListCardJPanel musicCard : musicCards) {
-                
-                this.cardsPanel.add(musicCard);
-                revalidate(); // Refresh the layout
-                repaint(); // Repaint the container
-            }
     }
 
     /**
@@ -59,20 +48,22 @@ public class HomeJPanelMusicListPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1020, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 600, Short.MAX_VALUE)
-        );
+        setLayout(new java.awt.BorderLayout());
     }// </editor-fold>//GEN-END:initComponents
     
-    public void customInitComponents(){
-       
+//    public void customInitComponents(){
+//       setLayout(new java.awt.GridLayout(2, 2));
+//    }
+    
+    private  void addMusciCardList(){
+        List<MusicListCardJPanel> musicCards = createMusicCards(); // Create a list of music cards
+
+            for (MusicListCardJPanel musicCard : musicCards) {
+                
+                this.cardsPanel.add(musicCard);
+                revalidate(); // Refresh the layout
+                repaint(); // Repaint the container
+            }
     }
     
     private static List<MusicListCardJPanel> createMusicCards() {
@@ -81,7 +72,7 @@ public class HomeJPanelMusicListPanel extends javax.swing.JPanel {
         List<MusicModel> musicList = HomeJPanelMusicListPanel.musicService.getALlMusicList();
         
         for(MusicModel music:musicList){
-            MusicListCardJPanel musicCard = new MusicListCardJPanel(music.getMusicName(), music.getTime());
+            MusicListCardJPanel musicCard = new MusicListCardJPanel(music.getMusicName(), music.getTime(), music.getDate(),music.getAvailableSeat(),music.getMusicDescription());
             musicCards.add(musicCard);
         }
 
