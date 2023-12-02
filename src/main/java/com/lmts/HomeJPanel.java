@@ -1,18 +1,16 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
+
 package com.lmts;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-/**
- *
- * @author sudip
- */
+
 public class HomeJPanel extends javax.swing.JPanel {
+    
+    private HomeJPanelMusicListPanel homeJPanelMusicListPanel;
+    private HomeJPanelMyTicketPanel homeJPanelMyTicketPanel;
+    private HomeJPanelTicketRatePanel homeJPanelTicketRatePanel; 
     
     private CardLayout cardLayout;
     /**
@@ -184,14 +182,14 @@ public class HomeJPanel extends javax.swing.JPanel {
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         
-        HomeJPanelMusicListPanel homeJPanelMusicListPanel = new HomeJPanelMusicListPanel();
-        HomeJPanelMyTicketPanel homeJPanelMyTicketPanel = new HomeJPanelMyTicketPanel();
-        HomeJPanelTicketRatePanel homeJPanelTicketRatePanel = new HomeJPanelTicketRatePanel();
+        this.homeJPanelMusicListPanel = new HomeJPanelMusicListPanel();
+        this.homeJPanelMyTicketPanel = new HomeJPanelMyTicketPanel();
+        this.homeJPanelTicketRatePanel = new HomeJPanelTicketRatePanel();
         
         
-        jLabel3.addMouseListener(new ClickListener(jPanel1, homePanelCardLayout));
-        jLabel4.addMouseListener(new ClickListener(jPanel1, homePanelCardLayout));
-        jLabel5.addMouseListener(new ClickListener(jPanel1, homePanelCardLayout));
+        jLabel3.addMouseListener(new ClickListener(jPanel1, homePanelCardLayout,this.homeJPanelMusicListPanel));
+        jLabel4.addMouseListener(new ClickListener(jPanel1, homePanelCardLayout,this.homeJPanelMusicListPanel));
+        jLabel5.addMouseListener(new ClickListener(jPanel1, homePanelCardLayout,this.homeJPanelMusicListPanel));
 
      
         jPanel1.add(homeJPanelMusicListPanel,"HomeJPanelMusicListPanel");
@@ -206,10 +204,12 @@ public class HomeJPanel extends javax.swing.JPanel {
     static class ClickListener implements MouseListener {
         private JPanel parentPanel;
         private CardLayout homeCardLayout;
+        private HomeJPanelMusicListPanel musciListPanel;
         
-        public ClickListener(JPanel jPanel, CardLayout cardLayout){
+        public ClickListener(JPanel jPanel, CardLayout cardLayout, HomeJPanelMusicListPanel muscListPanel){
             this.parentPanel = jPanel;
             this.homeCardLayout = cardLayout;
+            this.musciListPanel = muscListPanel;
         }
         @Override
         public void mouseClicked(MouseEvent e) {
@@ -219,6 +219,7 @@ public class HomeJPanel extends javax.swing.JPanel {
             switch(text){
                 case "Music List":
                     this.homeCardLayout.show(parentPanel, "HomeJPanelMusicListPanel");
+                    this.musciListPanel.updateMusicList();
                     break;
                 case "My Ticket":
                     this.homeCardLayout.show(parentPanel, "HomeJPanelMyTicketPanel");                    

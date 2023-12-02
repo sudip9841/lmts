@@ -19,6 +19,7 @@ com\lmts\model\User.class
 com\lmts\helpers\DBUtils.class
 com\lmts\SignUpJPanel$3.class
 com\lmts\Lmts.class
+com\lmts\HomeJPanelTicketRatePanel$1.class
 com\lmts\SignUpJPanel$2.class
 com\lmts\Dao\UserDao.class
 com\lmts\LoginJPanel$4.class

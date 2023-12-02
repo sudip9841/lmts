@@ -38,6 +38,17 @@ public class HomeJPanelMusicListPanel extends javax.swing.JPanel {
             this.addMusciCardList();
             
     }
+    
+    public void updateMusicList() {
+        cardsPanel.removeAll(); // Clear existing cards
+        List<MusicListCardJPanel> musicCards = createMusicCards(); // Re-create music cards
+        for (MusicListCardJPanel musicCard : musicCards) {
+            cardsPanel.add(musicCard);
+            revalidate(); // Refresh the layout
+            repaint(); // Repaint the container
+        }
+    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
