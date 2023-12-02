@@ -4,11 +4,16 @@ package com.lmts;
 import com.lmts.model.MusicModel;
 import com.lmts.service.MusicService;
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.border.Border;
 
 
 public class HomeJPanelMusicListPanel extends javax.swing.JPanel {
@@ -40,13 +45,10 @@ public class HomeJPanelMusicListPanel extends javax.swing.JPanel {
     }
     
     public void updateMusicList() {
+        
         cardsPanel.removeAll(); // Clear existing cards
-        List<MusicListCardJPanel> musicCards = createMusicCards(); // Re-create music cards
-        for (MusicListCardJPanel musicCard : musicCards) {
-            cardsPanel.add(musicCard);
-            revalidate(); // Refresh the layout
-            repaint(); // Repaint the container
-        }
+        this.addMusciCardList();
+        
     }
     
 
@@ -70,8 +72,17 @@ public class HomeJPanelMusicListPanel extends javax.swing.JPanel {
         List<MusicListCardJPanel> musicCards = createMusicCards(); // Create a list of music cards
 
             for (MusicListCardJPanel musicCard : musicCards) {
+                musicCard.setMaximumSize(new Dimension(700, 250));
                 
+                  // Create a compound border with margin and bottom border
+                Border compoundBorder = BorderFactory.createCompoundBorder(
+                        BorderFactory.createEmptyBorder(0, 0, 10, 0),  // Add margin at the bottom
+                        BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK)  // Add bottom border
+                );
+                musicCard.setBorder(compoundBorder);
+                this.cardsPanel.add(Box.createRigidArea(new Dimension(0, 10)));
                 this.cardsPanel.add(musicCard);
+                this.cardsPanel.add(Box.createRigidArea(new Dimension(0, 10)));
                 revalidate(); // Refresh the layout
                 repaint(); // Repaint the container
             }

@@ -24,6 +24,8 @@ com\lmts\SignUpJPanel$2.class
 com\lmts\Dao\UserDao.class
 com\lmts\LoginJPanel$4.class
 com\lmts\model\MusicModel.class
+com\lmts\TicketDialog$1.class
+com\lmts\TicketDialog.class
 com\lmts\LoginJPanel$2.class
 com\lmts\shared\AlertMessageDialogBox.class
 com\lmts\HomeJPanel$ClickListener.class

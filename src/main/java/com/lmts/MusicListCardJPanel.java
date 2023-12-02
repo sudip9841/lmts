@@ -2,30 +2,106 @@
 package com.lmts;
 
 import com.lmts.shared.AlertMessageDialogBox;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+
+class TicketDialog extends JDialog {
+    private JLabel titleLabel;
+    private JLabel dateLabel;
+    private JComboBox<String> ticketCategoryComboBox;
+    private JTextField quantityTextField;
+    private JButton buyButton;
+
+    public TicketDialog(String title, String date) {
+        setTitle("Buy Ticket");
+        setLayout(new GridLayout(4, 2, 10, 10));
+        setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+
+        titleLabel = new JLabel("Title: " + title);
+        dateLabel = new JLabel("Date: " + date);
+
+        ticketCategoryComboBox = new JComboBox<>(new String[]{"General", "VIP", "Premium"});
+        quantityTextField = new JTextField();
+
+        buyButton = new JButton("Buy");
+        buyButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Handle the buy button action
+                int quantity = Integer.parseInt(quantityTextField.getText());
+                String category = (String) ticketCategoryComboBox.getSelectedItem();
+
+                // Implement the logic for buying the ticket
+                // For demonstration purposes, just print the details
+                System.out.println("Ticket Details - Title: " + title + ", Date: " + date +
+                        ", Category: " + category + ", Quantity: " + quantity);
+
+                // Close the dialog
+                dispose();
+            }
+        });
+         add(new JLabel("Ticket Category:"));
+        add(ticketCategoryComboBox);
+        add(new JLabel("Quantity:"));
+        add(quantityTextField);
+        add(titleLabel);
+        add(dateLabel);
+        add(new JLabel());  // Placeholder for layout
+        add(buyButton);
+
+        pack();
+        setLocationRelativeTo(null);
+    }
+}
+
+
 
 
 public class MusicListCardJPanel extends javax.swing.JPanel {
+    private String musicName; 
+    private String showTime; 
+    private String date; 
+    private int availableTicket; 
+    private String description;
 
     /**
      * Creates new form MusicListCardJPanel
      */
     public MusicListCardJPanel(String musicName, String showTime, String date, int availableTicket, String description) {
+        this.musicName = musicName;
+        this.showTime = showTime;
+        this.date = date;
+        this.availableTicket = availableTicket;
+        this.description = description;
+        
         initComponents();
         this.jLabel1.setText(musicName);
         this.jLabel3.setText(showTime);
         this.jLabel5.setText(date);
         this.jLabel7.setText( String.valueOf(availableTicket));
-        this.jLabel9.setText(description);
+        this.jTextArea1.setText(description);
+        this.jTextArea1.setLineWrap(true);
+        this.jTextArea1.setWrapStyleWord(true);
+        this.jTextArea1.setColumns(400); // Set the number of columns (adjust as needed)
+        this.jTextArea1.setRows(4);  
+        this.jTextArea1.setBorder(null);
+        this.jTextArea1.setEditable(false);
         
         // Add a mouse listener to handle click events
-        addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                AlertMessageDialogBox.showInfo(date,"Info");
-            }
-        });
+//        addMouseListener(new MouseAdapter() {
+//            @Override
+//            public void mouseClicked(MouseEvent e) {
+//                AlertMessageDialogBox.showInfo(date,"Info");
+//            }
+//        });
     }
 
     /**
@@ -45,7 +121,9 @@ public class MusicListCardJPanel extends javax.swing.JPanel {
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
+        jButton1 = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -65,7 +143,19 @@ public class MusicListCardJPanel extends javax.swing.JPanel {
 
         jLabel8.setText("Description");
 
-        jLabel9.setText("description");
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jScrollPane1.setViewportView(jTextArea1);
+
+        jButton1.setBackground(new java.awt.Color(51, 153, 0));
+        jButton1.setForeground(new java.awt.Color(255, 255, 255));
+        jButton1.setText("Book Ticket");
+        jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -83,11 +173,15 @@ public class MusicListCardJPanel extends javax.swing.JPanel {
                             .addComponent(jLabel8))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel9)
                             .addComponent(jLabel3)
                             .addComponent(jLabel5)
-                            .addComponent(jLabel7))))
-                .addContainerGap(406, Short.MAX_VALUE))
+                            .addComponent(jLabel7)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 342, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(128, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton1)
+                .addGap(29, 29, 29))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -107,15 +201,28 @@ public class MusicListCardJPanel extends javax.swing.JPanel {
                     .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel8)
-                    .addComponent(jLabel9))
-                .addContainerGap(18, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(10, 10, 10)
+                .addComponent(jButton1)
+                .addContainerGap(15, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+//        AlertMessageDialogBox.showInfo(this.musicName,"Info");
+        this.showTicketDialog();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void showTicketDialog() {
+        TicketDialog ticketDialog = new TicketDialog(this.musicName, this.date);
+        ticketDialog.setVisible(true);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -124,6 +231,7 @@ public class MusicListCardJPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextArea jTextArea1;
     // End of variables declaration//GEN-END:variables
 }
