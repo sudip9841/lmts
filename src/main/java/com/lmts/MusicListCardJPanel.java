@@ -2,64 +2,170 @@
 package com.lmts;
 
 import com.lmts.shared.AlertMessageDialogBox;
+import java.awt.BorderLayout;
+import java.awt.Dialog;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 
 class TicketDialog extends JDialog {
-    private JLabel titleLabel;
+   private JLabel titleLabel;
     private JLabel dateLabel;
     private JComboBox<String> ticketCategoryComboBox;
     private JTextField quantityTextField;
     private JButton buyButton;
+    private JButton addTicketButton;
+    private JTable ticketTable;
+    private DefaultTableModel tableModel;
+    private int totalTickets = 0;
+    private double totalPrice = 0;
 
     public TicketDialog(String title, String date) {
         setTitle("Buy Ticket");
-        setLayout(new GridLayout(4, 2, 10, 10));
-        setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        setLayout(new BorderLayout());
+
+        JPanel infoPanel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.insets = new Insets(5, 5, 5, 5);
 
         titleLabel = new JLabel("Title: " + title);
         dateLabel = new JLabel("Date: " + date);
-
         ticketCategoryComboBox = new JComboBox<>(new String[]{"General", "VIP", "Premium"});
         quantityTextField = new JTextField();
+        addTicketButton = new JButton("Add Ticket");
+        buyButton = new JButton("Buy Tickets");
+        
+         // Increase width for quantityTextField and ticketCategoryComboBox
+        quantityTextField.setPreferredSize(new Dimension(150, quantityTextField.getPreferredSize().height));
+        ticketCategoryComboBox.setPreferredSize(new Dimension(150, ticketCategoryComboBox.getPreferredSize().height));
 
-        buyButton = new JButton("Buy");
+        infoPanel.add(new JLabel("Ticket Category:"), gbc);
+        gbc.gridx++;
+        infoPanel.add(ticketCategoryComboBox, gbc);
+        gbc.gridx = 0;
+        gbc.gridy++;
+        infoPanel.add(new JLabel("Quantity:"), gbc);
+        gbc.gridx++;
+        infoPanel.add(quantityTextField, gbc);
+        gbc.gridx = 0;
+        gbc.gridy++;
+        infoPanel.add(titleLabel, gbc);
+        gbc.gridx++;
+        infoPanel.add(dateLabel, gbc);
+        gbc.gridx = 0;
+        gbc.gridy++;
+        infoPanel.add(addTicketButton, gbc);
+        gbc.gridx++;
+        infoPanel.add(buyButton, gbc);
+
+        add(infoPanel, BorderLayout.NORTH);
+
+        // Table setup
+        tableModel = new DefaultTableModel();
+        tableModel.addColumn("Title");
+        tableModel.addColumn("Date");
+        tableModel.addColumn("Category");
+        tableModel.addColumn("Quantity");
+        tableModel.addColumn("Price");
+
+        ticketTable = new JTable(tableModel);
+        JScrollPane tableScrollPane = new JScrollPane(ticketTable);
+        add(tableScrollPane, BorderLayout.CENTER);
+        
+        setModalityType(Dialog.ModalityType.APPLICATION_MODAL); 
+        
+         // Set the default close operation to DISPOSE_ON_CLOSE
+        setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+
+        // Override the processWindowEvent method
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                // Otherwise, do nothing
+            }
+        });
+
+        addTicketButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                handleAddTicketButtonAction(title, date);
+            }
+        });
+
         buyButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Handle the buy button action
-                int quantity = Integer.parseInt(quantityTextField.getText());
-                String category = (String) ticketCategoryComboBox.getSelectedItem();
-
-                // Implement the logic for buying the ticket
-                // For demonstration purposes, just print the details
-                System.out.println("Ticket Details - Title: " + title + ", Date: " + date +
-                        ", Category: " + category + ", Quantity: " + quantity);
-
-                // Close the dialog
-                dispose();
+                handleBuyButtonAction();
             }
         });
-         add(new JLabel("Ticket Category:"));
-        add(ticketCategoryComboBox);
-        add(new JLabel("Quantity:"));
-        add(quantityTextField);
-        add(titleLabel);
-        add(dateLabel);
-        add(new JLabel());  // Placeholder for layout
-        add(buyButton);
 
-        pack();
+        setSize(new Dimension(1020, 600));
         setLocationRelativeTo(null);
+    
     }
+
+    private void handleAddTicketButtonAction(String title, String date) {
+        int quantity = Integer.parseInt(quantityTextField.getText());
+        String category = (String) ticketCategoryComboBox.getSelectedItem();
+        double price = calculateTicketPrice(category, quantity);
+
+        // Add the ticket to the table
+        tableModel.addRow(new Object[]{title, date, category, quantity, price});
+
+        // Update total tickets and total price
+        totalTickets += quantity;
+        totalPrice += price;
+
+        // Clear input fields
+        quantityTextField.setText("");
+
+        // You can update a total price label or display it in any way you prefer
+        System.out.println("Total Tickets: " + totalTickets + ", Total Price: $" + totalPrice);
+    }
+
+    private void handleBuyButtonAction() {
+        // Implement buy button logic if needed
+        System.out.println("Purchase finalized!");
+        dispose();
+    }
+
+    private double calculateTicketPrice(String category, int quantity) {
+        // Implement your logic for calculating ticket price based on category and quantity
+        // For demonstration purposes, a simple calculation is used here
+        double basePrice;
+        switch (category) {
+            case "VIP":
+                basePrice = 50.0;
+                break;
+            case "Premium":
+                basePrice = 30.0;
+                break;
+            default:
+                basePrice = 20.0;
+        }
+        return basePrice * quantity;
+    }
+
 }
 
 

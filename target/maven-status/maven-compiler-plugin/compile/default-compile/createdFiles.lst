@@ -1,6 +1,7 @@
 com\lmts\AdminDashboardJPanel.class
 com\lmts\MainJFrame.class
 com\lmts\service\MusicService.class
+com\lmts\TicketDialog$2.class
 com\lmts\HomeJPanelMusicListPanel.class
 com\lmts\MusicListCardJPanel.class
 com\lmts\SignUpJPanel$6.class
@@ -32,4 +33,5 @@ com\lmts\HomeJPanel$ClickListener.class
 com\lmts\HomeJPanelTicketRatePanel.class
 com\lmts\SignUpJPanel$4.class
 com\lmts\helpers\Config.class
+com\lmts\TicketDialog$3.class
 com\lmts\LoginJPanel.class
