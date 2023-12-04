@@ -1,6 +1,8 @@
 
 package com.lmts;
 
+import com.lmts.model.Category;
+import com.lmts.service.CategoryService;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -15,16 +17,19 @@ import javax.swing.table.DefaultTableModel;
 
 
 public class HomeJPanelTicketRatePanel extends javax.swing.JPanel {
+    private CategoryService categoryService;
     private JTable ticketTable;
+    private DefaultTableModel tableModel;
     /**
      * Creates new form HomeJPanelTicketRatePanel
      */
     public HomeJPanelTicketRatePanel() {
 //        initComponents();
-         setLayout(new BorderLayout());
+        this.categoryService = new CategoryService();
+        setLayout(new BorderLayout());
 
         // Create a non-editable DefaultTableModel
-        DefaultTableModel tableModel = new DefaultTableModel() {
+        this.tableModel = new DefaultTableModel() {
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
@@ -35,18 +40,10 @@ public class HomeJPanelTicketRatePanel extends javax.swing.JPanel {
         tableModel.addColumn("Category");
         tableModel.addColumn("Price");
 
-        // Sample data for ticket categories and prices
-        List<String> categories = Arrays.asList("General", "VIP", "Premium");
-        List<Double> prices = Arrays.asList(20.0, 50.0, 30.0);
-
-        // Populate the table model with data
-        for (int i = 0; i < categories.size(); i++) {
-            Object[] rowData = {categories.get(i), prices.get(i)};
-            tableModel.addRow(rowData);
-        }
+        this.setTableData();
 
         // Create a JTable with the non-editable model
-        ticketTable = new JTable(tableModel);
+        ticketTable = new JTable(this.tableModel);
 
         // Add the table to a JScrollPane for scrolling
         JScrollPane tableScrollPane = new JScrollPane(ticketTable);
@@ -61,6 +58,15 @@ public class HomeJPanelTicketRatePanel extends javax.swing.JPanel {
 
         // Add the container to the layout
         add(tableContainer, BorderLayout.CENTER);
+    }
+    
+    public void setTableData(){
+        List<Category> categoryList = this.categoryService.getAllCategory();
+        this.tableModel.setRowCount(0);
+        for(Category category:categoryList){
+            Object[] rowData = {category.getCategoryName(), category.getPrice()};
+            this.tableModel.addRow(rowData);
+        }
     }
 
     /**
@@ -84,26 +90,6 @@ public class HomeJPanelTicketRatePanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
     
-      private void populateTicketTable() {
-        // Sample data for ticket categories and prices
-        List<String> categories = Arrays.asList("General", "VIP", "Premium");
-        List<Double> prices = Arrays.asList(20.0, 50.0, 30.0);
-
-        // Define the column names
-        String[] columnNames = {"Category", "Price"};
-
-        // Create a DefaultTableModel
-        DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0);
-
-        // Populate the table model with data
-        for (int i = 0; i < categories.size(); i++) {
-            Object[] rowData = {categories.get(i), prices.get(i)};
-            tableModel.addRow(rowData);
-        }
-
-        // Set the table model to the JTable
-        ticketTable.setModel(tableModel);
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables

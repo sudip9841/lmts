@@ -187,9 +187,9 @@ public class HomeJPanel extends javax.swing.JPanel {
         this.homeJPanelTicketRatePanel = new HomeJPanelTicketRatePanel();
         
         
-        jLabel3.addMouseListener(new ClickListener(jPanel1, homePanelCardLayout,this.homeJPanelMusicListPanel));
-        jLabel4.addMouseListener(new ClickListener(jPanel1, homePanelCardLayout,this.homeJPanelMusicListPanel));
-        jLabel5.addMouseListener(new ClickListener(jPanel1, homePanelCardLayout,this.homeJPanelMusicListPanel));
+        jLabel3.addMouseListener(new ClickListener(jPanel1, homePanelCardLayout,this.homeJPanelMusicListPanel, this.homeJPanelMyTicketPanel,this.homeJPanelTicketRatePanel));
+        jLabel4.addMouseListener(new ClickListener(jPanel1, homePanelCardLayout,this.homeJPanelMusicListPanel,this.homeJPanelMyTicketPanel,this.homeJPanelTicketRatePanel));
+        jLabel5.addMouseListener(new ClickListener(jPanel1, homePanelCardLayout,this.homeJPanelMusicListPanel,this.homeJPanelMyTicketPanel,this.homeJPanelTicketRatePanel));
 
      
         jPanel1.add(homeJPanelMusicListPanel,"HomeJPanelMusicListPanel");
@@ -205,11 +205,17 @@ public class HomeJPanel extends javax.swing.JPanel {
         private JPanel parentPanel;
         private CardLayout homeCardLayout;
         private HomeJPanelMusicListPanel musciListPanel;
+        private HomeJPanelMyTicketPanel myTicketPanel;
+        private HomeJPanelTicketRatePanel ticketRatePanel;
         
-        public ClickListener(JPanel jPanel, CardLayout cardLayout, HomeJPanelMusicListPanel muscListPanel){
+        public ClickListener(JPanel jPanel, CardLayout cardLayout, HomeJPanelMusicListPanel muscListPanel, HomeJPanelMyTicketPanel myTicketPanel,
+                HomeJPanelTicketRatePanel ticketRatePanel){
             this.parentPanel = jPanel;
             this.homeCardLayout = cardLayout;
             this.musciListPanel = muscListPanel;
+            this.myTicketPanel = myTicketPanel;
+            this.ticketRatePanel = ticketRatePanel;
+            
         }
         @Override
         public void mouseClicked(MouseEvent e) {
@@ -225,7 +231,8 @@ public class HomeJPanel extends javax.swing.JPanel {
                     this.homeCardLayout.show(parentPanel, "HomeJPanelMyTicketPanel");                    
                     break;
                 case "Ticket Rate":
-                    this.homeCardLayout.show(parentPanel, "HomeJPanelTicketRatePanel");                    
+                    this.homeCardLayout.show(parentPanel, "HomeJPanelTicketRatePanel");
+                    this.ticketRatePanel.setTableData();
                     break;
                 default:
                     this.homeCardLayout.show(parentPanel, "HomeJPanelHomePanel");
