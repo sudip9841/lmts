@@ -3,7 +3,9 @@ package com.lmts;
 
 import com.lmts.model.Category;
 import com.lmts.service.CategoryService;
+import com.lmts.service.TicketsService;
 import com.lmts.shared.AlertMessageDialogBox;
+import com.lmts.shared.UserDetailsSingleton;
 import java.awt.BorderLayout;
 import java.awt.Dialog;
 import java.awt.Dimension;
@@ -38,9 +40,15 @@ class TicketDialog extends JDialog {
     private int totalTickets = 0;
     private double totalPrice = 0;
     private CategoryService categoryService;
+    private TicketsService ticketsService;
+    private int musicId = 0;
+    private int showTimeId = 0;
 
-    public TicketDialog(String title, String date) {
+    public TicketDialog(String title, String date, int musicId, int showTimeId) {
+        this.musicId = musicId;
+        this.showTimeId = showTimeId;
         this.categoryService = new CategoryService();
+        this.ticketsService = new TicketsService();
         
         setTitle("Buy Ticket");
         setLayout(new BorderLayout());
@@ -174,6 +182,30 @@ class TicketDialog extends JDialog {
 
         // Check the user's choice
         if (result == JOptionPane.YES_OPTION) {
+            
+             int rowCount = tableModel.getRowCount();
+             int columnCount = tableModel.getColumnCount();
+             
+             
+             UserDetailsSingleton userDetails = UserDetailsSingleton.getInstance();
+             
+             int userId = userDetails.getUserId();
+             int musicId = this.musicId;
+             int showTimeId = this.showTimeId;
+             
+             System.out.println("user id:"+userId+" musicId: "+musicId+" showTImeId: "+showTimeId);
+
+            // Iterate through rows
+            for (int row = 0; row < rowCount; row++) {
+                // Iterate through columns
+                for (int col = 0; col < columnCount; col++) {
+                    // Get the value at the current row and column
+                    Object cellValue = tableModel.getValueAt(row, col);
+                    System.out.print(cellValue + "\t");
+                }
+                // Move to the next line after printing all columns of a row
+                System.out.println();
+            }
             System.out.println("Purchase finalized!");
             dispose();
         }
@@ -220,21 +252,25 @@ class TicketDialog extends JDialog {
 
 
 public class MusicListCardJPanel extends javax.swing.JPanel {
+    private int musicId;
     private String musicName; 
     private String showTime; 
     private String date; 
     private int availableTicket; 
     private String description;
+    private int showTimeId;
 
     /**
      * Creates new form MusicListCardJPanel
      */
-    public MusicListCardJPanel(String musicName, String showTime, String date, int availableTicket, String description) {
+    public MusicListCardJPanel(String musicName, String showTime, String date, int availableTicket, String description, int musicId, int showTimeId) {
+        this.musicId = musicId;
         this.musicName = musicName;
         this.showTime = showTime;
         this.date = date;
         this.availableTicket = availableTicket;
         this.description = description;
+        this.showTimeId = showTimeId;
         
         initComponents();
         this.jLabel1.setText(musicName);
@@ -371,7 +407,7 @@ public class MusicListCardJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void showTicketDialog() {
-        TicketDialog ticketDialog = new TicketDialog(this.musicName, this.date);
+        TicketDialog ticketDialog = new TicketDialog(this.musicName, this.date, this.musicId,this.showTimeId);
         ticketDialog.setVisible(true);
     }
 

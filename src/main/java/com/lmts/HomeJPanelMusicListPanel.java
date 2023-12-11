@@ -94,7 +94,7 @@ public class HomeJPanelMusicListPanel extends javax.swing.JPanel {
         List<MusicModel> musicList = HomeJPanelMusicListPanel.musicService.getALlMusicList();
         
         for(MusicModel music:musicList){
-            MusicListCardJPanel musicCard = new MusicListCardJPanel(music.getMusicName(), music.getTime(), music.getDate(),music.getAvailableSeat(),music.getMusicDescription());
+            MusicListCardJPanel musicCard = new MusicListCardJPanel(music.getMusicName(), music.getTime(), music.getDate(),music.getAvailableSeat(),music.getMusicDescription(), music.getMusicId(),music.getShowTimeId());
             musicCards.add(musicCard);
         }
 
