@@ -1,24 +1,25 @@
 
 package com.lmts;
 
+import com.lmts.model.Category;
+import com.lmts.service.CategoryService;
 import com.lmts.shared.AlertMessageDialogBox;
 import java.awt.BorderLayout;
 import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Optional;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -36,8 +37,11 @@ class TicketDialog extends JDialog {
     private DefaultTableModel tableModel;
     private int totalTickets = 0;
     private double totalPrice = 0;
+    private CategoryService categoryService;
 
     public TicketDialog(String title, String date) {
+        this.categoryService = new CategoryService();
+        
         setTitle("Buy Ticket");
         setLayout(new BorderLayout());
 
@@ -50,7 +54,11 @@ class TicketDialog extends JDialog {
 
         titleLabel = new JLabel("Title: " + title);
         dateLabel = new JLabel("Date: " + date);
-        ticketCategoryComboBox = new JComboBox<>(new String[]{"General", "VIP", "Premium"});
+        String[] categoryNames = this.categoryService.getAllCategory().stream()
+                                     .map(Category::getCategoryName)
+                                     .toArray(String[]::new);
+        
+        ticketCategoryComboBox = new JComboBox<>(categoryNames);
         quantityTextField = new JTextField();
         addTicketButton = new JButton("Add Ticket");
         buyButton = new JButton("Buy Tickets");
@@ -128,9 +136,17 @@ class TicketDialog extends JDialog {
         int quantity = Integer.parseInt(quantityTextField.getText());
         String category = (String) ticketCategoryComboBox.getSelectedItem();
         double price = calculateTicketPrice(category, quantity);
+        
+        // Check if the category already exists in the table
+        int rowIndex = findRowIndexByCategory(category);
 
-        // Add the ticket to the table
-        tableModel.addRow(new Object[]{title, date, category, quantity, price});
+        if (rowIndex != -1) {
+        // Category already exists, update the existing row
+        updateExistingRow(rowIndex, quantity, price);
+        } else {
+            // Category does not exist, add a new row
+            tableModel.addRow(new Object[]{title, date, category, quantity, price});
+        }
 
         // Update total tickets and total price
         totalTickets += quantity;
@@ -144,26 +160,58 @@ class TicketDialog extends JDialog {
     }
 
     private void handleBuyButtonAction() {
-        // Implement buy button logic if needed
-        System.out.println("Purchase finalized!");
-        dispose();
+        if(this.totalPrice==0){
+            AlertMessageDialogBox.showInfo("Please add music ticket", "Empty Music Ticket");
+            return;
+        }
+        
+         int result = JOptionPane.showConfirmDialog(
+                        TicketDialog.this, // Parent component
+                        "Are you sure you want to buy the tickets?"+ "Total Tickets: " + totalTickets + ", Total Price: £" + totalPrice, // Message
+                        "Confirmation", // Dialog title
+                        JOptionPane.YES_NO_OPTION // Option type
+                );
+
+        // Check the user's choice
+        if (result == JOptionPane.YES_OPTION) {
+            System.out.println("Purchase finalized!");
+            dispose();
+        }
+        
     }
 
     private double calculateTicketPrice(String category, int quantity) {
-        // Implement your logic for calculating ticket price based on category and quantity
-        // For demonstration purposes, a simple calculation is used here
-        double basePrice;
-        switch (category) {
-            case "VIP":
-                basePrice = 50.0;
-                break;
-            case "Premium":
-                basePrice = 30.0;
-                break;
-            default:
-                basePrice = 20.0;
+        // Find the selected category in the categoryList
+        Optional<Category> selectedCategoryObj = this.categoryService.getAllCategory().stream()
+                                                             .filter(Category -> Category.getCategoryName().equals(category))
+                                                             .findFirst();
+
+        // Calculate ticket price based on the selected category and quantity
+        if (selectedCategoryObj.isPresent()) {
+            Category categoryObj = selectedCategoryObj.get();
+            return categoryObj.getPrice() * quantity;
+        } else {
+            // Handle the case where the selected category is not found
+            System.err.println("Selected category not found: " + category);
+            return 0.0; // or throw an exception, return a default value, etc.
         }
-        return basePrice * quantity;
+    }
+    
+    private int findRowIndexByCategory(String category) {
+    // Iterate through the table to find the row index with the given category
+    for (int i = 0; i < tableModel.getRowCount(); i++) {
+        String existingCategory = (String) tableModel.getValueAt(i, 2); // Assuming category is in the third column
+        if (existingCategory.equals(category)) {
+            return i; // Return the row index if category exists
+        }
+    }
+    return -1; // Return -1 if category is not found
+    }
+
+    private void updateExistingRow(int rowIndex, int quantity, double price) {
+        // Update the existing row with the new quantity and price
+        tableModel.setValueAt((int) tableModel.getValueAt(rowIndex, 3) + quantity, rowIndex, 3); // Update quantity
+        tableModel.setValueAt((double) tableModel.getValueAt(rowIndex, 4) + price, rowIndex, 4); // Update price
     }
 
 }
