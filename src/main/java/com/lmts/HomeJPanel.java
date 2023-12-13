@@ -228,7 +228,8 @@ public class HomeJPanel extends javax.swing.JPanel {
                     this.musciListPanel.updateMusicList();
                     break;
                 case "My Ticket":
-                    this.homeCardLayout.show(parentPanel, "HomeJPanelMyTicketPanel");                    
+                    this.homeCardLayout.show(parentPanel, "HomeJPanelMyTicketPanel");
+                    this.myTicketPanel.setTableData();
                     break;
                 case "Ticket Rate":
                     this.homeCardLayout.show(parentPanel, "HomeJPanelTicketRatePanel");

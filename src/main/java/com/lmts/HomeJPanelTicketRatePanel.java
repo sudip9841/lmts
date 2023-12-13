@@ -40,7 +40,7 @@ public class HomeJPanelTicketRatePanel extends javax.swing.JPanel {
         tableModel.addColumn("Category");
         tableModel.addColumn("Price");
 
-        this.setTableData();
+//        this.setTableData();
 
         // Create a JTable with the non-editable model
         ticketTable = new JTable(this.tableModel);

@@ -4,6 +4,7 @@ package com.lmts.Dao;
 import com.lmts.helpers.DBUtils;
 import com.lmts.model.Association;
 import com.lmts.model.Ticket;
+import com.lmts.model.TicketHistory;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -72,6 +73,40 @@ public class TicketsDao {
 
             preparedStatement.executeBatch();
         }
+    }
+    
+    
+    public List<TicketHistory> getTicketsByUserId(int userId) {
+        List<TicketHistory> tickets = new ArrayList<>();
+
+        String query = "SELECT t.id, m.name AS musicName, t.quantity, t.total_price AS totalPrice, st.date, st.time " +
+                "FROM tickets t " +
+                "JOIN show_time st ON t.show_time_id = st.id " +
+                "JOIN music m ON m.id = st.music_id " +
+                "JOIN user u ON u.id = t.user_id " +
+                "WHERE u.id = ?";
+
+        try (PreparedStatement preparedStatement = this.con.prepareStatement(query)) {
+            preparedStatement.setInt(1, userId);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    TicketHistory ticket = new TicketHistory();
+                    ticket.setId(resultSet.getInt("id"));
+                    ticket.setMusicName(resultSet.getString("musicName"));
+                    ticket.setQuantity(resultSet.getInt("quantity"));
+                    ticket.setTotalPrice(resultSet.getDouble("totalPrice"));
+                    ticket.setDate(resultSet.getString("date"));
+                    ticket.setTime(resultSet.getString("time"));
+                    tickets.add(ticket);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle the exception as needed
+        }
+
+        return tickets;
     }
     
     

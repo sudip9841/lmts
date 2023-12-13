@@ -1,5 +1,6 @@
 C:\college\greenwich\JavaSwing\lmts\src\main\java\com\lmts\HomeJPanelTicketRatePanel.java
 C:\college\greenwich\JavaSwing\lmts\src\main\java\com\lmts\MusicListCardJPanel.java
+C:\college\greenwich\JavaSwing\lmts\src\main\java\com\lmts\shared\PdfGenerator.java
 C:\college\greenwich\JavaSwing\lmts\src\main\java\com\lmts\model\Ticket.java
 C:\college\greenwich\JavaSwing\lmts\src\main\java\com\lmts\service\MusicService.java
 C:\college\greenwich\JavaSwing\lmts\src\main\java\com\lmts\model\Association.java
@@ -7,6 +8,7 @@ C:\college\greenwich\JavaSwing\lmts\src\main\java\com\lmts\service\CategoryServi
 C:\college\greenwich\JavaSwing\lmts\src\main\java\com\lmts\helpers\DBUtils.java
 C:\college\greenwich\JavaSwing\lmts\src\main\java\com\lmts\LoginJPanel.java
 C:\college\greenwich\JavaSwing\lmts\src\main\java\com\lmts\Dao\TicketsDao.java
+C:\college\greenwich\JavaSwing\lmts\src\main\java\com\lmts\model\TicketHistory.java
 C:\college\greenwich\JavaSwing\lmts\src\main\java\com\lmts\Dao\UserDao.java
 C:\college\greenwich\JavaSwing\lmts\src\main\java\com\lmts\MainJFrame.java
 C:\college\greenwich\JavaSwing\lmts\src\main\java\com\lmts\SignUpJPanel.java
