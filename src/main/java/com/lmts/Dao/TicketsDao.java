@@ -2,13 +2,15 @@
 package com.lmts.Dao;
 
 import com.lmts.helpers.DBUtils;
-import com.lmts.model.Association;
 import com.lmts.model.Ticket;
 import com.lmts.model.TicketHistory;
+import com.lmts.model.TicketHistoryAdmin;
+import com.lmts.shared.AlertMessageDialogBox;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,13 +28,30 @@ public class TicketsDao {
     
     private static final String INSERT_TICKET_SQL = "INSERT INTO tickets (user_id, show_time_id, quantity, total_price) VALUES (?, ?, ?, ?)";
     private static final String INSERT_ASSOCIATION_SQL = "INSERT INTO ticket_category_association (ticket_id, category_id) VALUES (?, ?)";
-
+    
+    private static final String SELECT_AVAILABLE_SEATS_SQL = "SELECT available_seat FROM show_time WHERE id = ?";
+    private static final String UPDATE_AVAILABLE_SEATS_SQL = "UPDATE show_time SET available_seat = ? WHERE id = ?";
+    
     public boolean saveTicketsAndAssociations(Ticket ticket, List<Integer> categoryIds) {
 
         try (Connection connection = this.con) {
-            int generatedTicketId = saveTicket(connection, ticket);
-            saveAssociationsBatch(connection, generatedTicketId, categoryIds);
-            return true;
+            int availableSeats = getAvailableSeats(connection, ticket.getShowTimeId());
+            if (availableSeats >= ticket.getQuantity()) {
+                // Save ticket and associations
+                int generatedTicketId = saveTicket(connection, ticket);
+                saveAssociationsBatch(connection, generatedTicketId, categoryIds);
+
+                // Deduct available seats
+                int updatedAvailableSeats = availableSeats - ticket.getQuantity();
+                updateAvailableSeats(connection, ticket.getShowTimeId(), updatedAvailableSeats);
+
+                return true;
+            } else {
+                // Not enough available seats, show alert or handle as needed
+                System.out.println("Not enough available seats.");
+                AlertMessageDialogBox.showError("Not enough available seats.", "Failed");
+                return false;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
@@ -75,6 +94,31 @@ public class TicketsDao {
         }
     }
     
+    private int getAvailableSeats(Connection connection, int showTimeId) throws SQLException {
+        int availableSeats = -1;
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SELECT_AVAILABLE_SEATS_SQL)) {
+            preparedStatement.setInt(1, showTimeId);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    availableSeats = resultSet.getInt("available_seat");
+                }
+            }
+        }
+
+        return availableSeats;
+    }
+
+    private void updateAvailableSeats(Connection connection, int showTimeId, int availableSeats) throws SQLException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_AVAILABLE_SEATS_SQL)) {
+            preparedStatement.setInt(1, availableSeats);
+            preparedStatement.setInt(2, showTimeId);
+
+            preparedStatement.executeUpdate();
+        }
+    }
+    
     
     public List<TicketHistory> getTicketsByUserId(int userId) {
         List<TicketHistory> tickets = new ArrayList<>();
@@ -107,6 +151,40 @@ public class TicketsDao {
         }
 
         return tickets;
+    }
+    
+    
+    public List<TicketHistoryAdmin> getTicketHistoryAdminList() {
+        List<TicketHistoryAdmin> ticketHistoryAdminList = new ArrayList<>();
+
+        try (Statement statement = this.con.createStatement()) {
+            String query = "SELECT t.id as ticketId, m.name as musicName, tt.type_name as ticketType, " +
+                           "tt.price as totalPrice, st.`date` as date, st.`time` as time " +
+                           "FROM ticket_category_association tca " +
+                           "JOIN tickets t ON t.id = tca.ticket_id " +
+                           "JOIN ticket_type tt ON tt.id = tca.category_id " +
+                           "JOIN show_time st ON st.id = t.show_time_id " +
+                           "JOIN music m ON m.id = st.music_id";
+
+            try (ResultSet resultSet = statement.executeQuery(query)) {
+                while (resultSet.next()) {
+                    int ticketId = resultSet.getInt("ticketId");
+                    String musicName = resultSet.getString("musicName");
+                    String ticketType = resultSet.getString("ticketType");
+                    double totalPrice = resultSet.getDouble("totalPrice");
+                    String date = resultSet.getString("date");
+                    String time = resultSet.getString("time");
+
+                    TicketHistoryAdmin ticketHistoryAdmin = new TicketHistoryAdmin(ticketId, musicName, ticketType, totalPrice, date, time);
+                    ticketHistoryAdminList.add(ticketHistoryAdmin);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle the exception as needed
+        }
+
+        return ticketHistoryAdminList;
     }
     
     

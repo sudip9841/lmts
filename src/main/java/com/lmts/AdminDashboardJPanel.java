@@ -1,23 +1,98 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
-package com.lmts;
-import java.awt.*;
 
-/**
- *
- * @author sudip
- */
+package com.lmts;
+import com.lmts.model.TicketHistory;
+import com.lmts.model.TicketHistoryAdmin;
+import com.lmts.service.TicketsService;
+import com.lmts.shared.UserDetailsSingleton;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JButton;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+
+
 public class AdminDashboardJPanel extends javax.swing.JPanel {
     private CardLayout cardLayout; 
+    private TicketsService ticketsService;
+    private JTable ticketTable;
+    private DefaultTableModel tableModel;
     /**
      * Creates new form AdminDashboardJPanel
      * @param cardLayout
      */
     public AdminDashboardJPanel(CardLayout cardLayout) {
         this.cardLayout = cardLayout;
-        initComponents();
+//        initComponents();
+        this.ticketsService = new TicketsService();
+        setLayout(new BorderLayout());
+
+        // Create a non-editable DefaultTableModel
+        this.tableModel = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+
+        // Add columns to the model
+        tableModel.addColumn("Ticket Id");
+        tableModel.addColumn("Music Name");
+        tableModel.addColumn("Ticket Type");
+        tableModel.addColumn("Total Price");
+        tableModel.addColumn("Date");
+        tableModel.addColumn("Time");
+
+        this.setTableData();
+
+        // Create a JTable with the non-editable model
+        ticketTable = new JTable(this.tableModel);
+        
+
+        // Add the table to a JScrollPane for scrolling
+        JScrollPane tableScrollPane = new JScrollPane(ticketTable);
+
+        // Set the preferred width for the JScrollPane
+        int preferredWidth = (int) (Toolkit.getDefaultToolkit().getScreenSize().width * 0.7);
+        tableScrollPane.setPreferredSize(new Dimension(preferredWidth, tableScrollPane.getPreferredSize().height));
+
+        // Create a container with FlowLayout to hold the JScrollPane
+        JPanel tableContainer = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        tableContainer.add(tableScrollPane);
+        
+         // Add the container to the layout
+        add(tableContainer, BorderLayout.CENTER);
+
+        // Create and add a Refresh button
+        JButton refreshButton = new JButton("Refresh");
+        refreshButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Handle the refresh action (e.g., update table data)
+                setTableData();
+            }
+        });
+
+        // Create a JPanel for the Refresh button and add it to the layout
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.add(refreshButton);
+        add(buttonPanel, BorderLayout.SOUTH);
+
+        // Add the container to the layout
+        add(tableContainer, BorderLayout.CENTER);
+    }
+    
+    public void setTableData(){
+        
+        java.util.List<TicketHistoryAdmin> ticketHistory = this.ticketsService.getTicketHistoryAdminList();
+        this.tableModel.setRowCount(0);
+        for(TicketHistoryAdmin ticket:ticketHistory){
+            System.out.println(ticket.getMusicName());
+            Object[] rowData = {ticket.getTicketId(), ticket.getMusicName(), ticket.getTicketType(), ticket.getTotalPrice(),ticket.getDate(),ticket.getTime()};
+            this.tableModel.addRow(rowData);
+        }
     }
 
     /**

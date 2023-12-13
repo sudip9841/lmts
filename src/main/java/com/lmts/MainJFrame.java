@@ -43,7 +43,7 @@ public class MainJFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void customInitComponents() {
+    public void customInitComponents() {
 
        jPanel1 = new javax.swing.JPanel();
 //       setResizable(false);

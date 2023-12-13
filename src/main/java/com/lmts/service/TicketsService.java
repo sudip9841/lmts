@@ -5,6 +5,7 @@ import com.lmts.Dao.TicketsDao;
 import com.lmts.model.Association;
 import com.lmts.model.Ticket;
 import com.lmts.model.TicketHistory;
+import com.lmts.model.TicketHistoryAdmin;
 import java.util.List;
 
 public class TicketsService {
@@ -22,5 +23,9 @@ public class TicketsService {
     
     public List<TicketHistory> getTicketsByUserId(int userId){
         return this.ticketsDao.getTicketsByUserId(userId);
+    }
+    
+    public List<TicketHistoryAdmin> getTicketHistoryAdminList(){
+         return this.ticketsDao.getTicketHistoryAdminList();
     }
 }
