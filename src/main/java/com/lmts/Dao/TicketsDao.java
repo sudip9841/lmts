@@ -26,11 +26,11 @@ public class TicketsDao {
     private static final String INSERT_TICKET_SQL = "INSERT INTO tickets (user_id, show_time_id, quantity, total_price) VALUES (?, ?, ?, ?)";
     private static final String INSERT_ASSOCIATION_SQL = "INSERT INTO ticket_category_association (ticket_id, category_id) VALUES (?, ?)";
 
-    public boolean saveTicketsAndAssociations(List<Ticket> tickets, List<Association> associations) {
+    public boolean saveTicketsAndAssociations(Ticket ticket, List<Integer> categoryIds) {
 
         try (Connection connection = this.con) {
-            List<Integer> generatedTicketIds = saveTicketsBatch(connection, tickets);
-            saveAssociationsBatch(connection, generatedTicketIds, associations);
+            int generatedTicketId = saveTicket(connection, ticket);
+            saveAssociationsBatch(connection, generatedTicketId, categoryIds);
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -39,36 +39,34 @@ public class TicketsDao {
         }
     }
 
-    
-    private List<Integer> saveTicketsBatch(Connection connection, List<Ticket> tickets) throws SQLException {
-        List<Integer> generatedIds = new ArrayList<>();
+    private int saveTicket(Connection connection, Ticket ticket) throws SQLException {
+        int generatedId = -1;
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(INSERT_TICKET_SQL, PreparedStatement.RETURN_GENERATED_KEYS)) {
-            for (Ticket ticket : tickets) {
-                preparedStatement.setInt(1, ticket.getUserId());
-                preparedStatement.setInt(2, ticket.getShowTimeId());
-                preparedStatement.setInt(3, ticket.getQuantity());
-                preparedStatement.setDouble(4, ticket.getTotalPrice());
-                preparedStatement.addBatch();
-            }
+            preparedStatement.setInt(1, ticket.getUserId());
+            preparedStatement.setInt(2, ticket.getShowTimeId());
+            preparedStatement.setInt(3, ticket.getQuantity());
+            preparedStatement.setDouble(4, ticket.getTotalPrice());
 
-            preparedStatement.executeBatch();
+            preparedStatement.executeUpdate();
 
             try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
-                while (generatedKeys.next()) {
-                    generatedIds.add(generatedKeys.getInt(1));
+                if (generatedKeys.next()) {
+                    generatedId = generatedKeys.getInt(1);
                 }
             }
         }
 
-        return generatedIds;
+        return generatedId;
     }
 
-    private void saveAssociationsBatch(Connection connection, List<Integer> ticketIds, List<Association> associations) throws SQLException {
+   
+
+    private void saveAssociationsBatch(Connection connection, int ticketId, List<Integer> categoryIds) throws SQLException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(INSERT_ASSOCIATION_SQL)) {
-            for (int i = 0; i < ticketIds.size(); i++) {
-                preparedStatement.setInt(1, ticketIds.get(i));
-                preparedStatement.setInt(2, associations.get(i).getCategoryId());
+            for (int i = 0; i < categoryIds.size(); i++) {
+                preparedStatement.setInt(1, ticketId);
+                preparedStatement.setInt(2, categoryIds.get(i));
                 preparedStatement.addBatch();
             }
 

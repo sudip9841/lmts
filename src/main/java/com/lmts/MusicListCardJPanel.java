@@ -2,6 +2,7 @@
 package com.lmts;
 
 import com.lmts.model.Category;
+import com.lmts.model.Ticket;
 import com.lmts.service.CategoryService;
 import com.lmts.service.TicketsService;
 import com.lmts.shared.AlertMessageDialogBox;
@@ -16,6 +17,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -27,6 +30,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+
 
 class TicketDialog extends JDialog {
    private JLabel titleLabel;
@@ -100,6 +104,7 @@ class TicketDialog extends JDialog {
         tableModel = new DefaultTableModel();
         tableModel.addColumn("Title");
         tableModel.addColumn("Date");
+        tableModel.addColumn("Category Id");
         tableModel.addColumn("Category");
         tableModel.addColumn("Quantity");
         tableModel.addColumn("Price");
@@ -144,16 +149,18 @@ class TicketDialog extends JDialog {
         int quantity = Integer.parseInt(quantityTextField.getText());
         String category = (String) ticketCategoryComboBox.getSelectedItem();
         double price = calculateTicketPrice(category, quantity);
+        int categoryId = getCategoryId(category);
         
         // Check if the category already exists in the table
         int rowIndex = findRowIndexByCategory(category);
+     
 
         if (rowIndex != -1) {
         // Category already exists, update the existing row
         updateExistingRow(rowIndex, quantity, price);
         } else {
             // Category does not exist, add a new row
-            tableModel.addRow(new Object[]{title, date, category, quantity, price});
+            tableModel.addRow(new Object[]{title, date, categoryId, category, quantity, price});
         }
 
         // Update total tickets and total price
@@ -190,22 +197,24 @@ class TicketDialog extends JDialog {
              UserDetailsSingleton userDetails = UserDetailsSingleton.getInstance();
              
              int userId = userDetails.getUserId();
-             int musicId = this.musicId;
              int showTimeId = this.showTimeId;
+             int totalTicket = this.totalTickets;
+             double totalPrice = this.totalPrice;
              
-             System.out.println("user id:"+userId+" musicId: "+musicId+" showTImeId: "+showTimeId);
+            Ticket ticketObj = new Ticket(userId,showTimeId,totalTicket,totalPrice);
+             
+            List<Integer> categoryIds = new ArrayList<>();
 
-            // Iterate through rows
-            for (int row = 0; row < rowCount; row++) {
-                // Iterate through columns
-                for (int col = 0; col < columnCount; col++) {
-                    // Get the value at the current row and column
-                    Object cellValue = tableModel.getValueAt(row, col);
-                    System.out.print(cellValue + "\t");
-                }
-                // Move to the next line after printing all columns of a row
-                System.out.println();
+            for (int row = 0; row < tableModel.getRowCount(); row++) {
+                int categoryValue = (int) tableModel.getValueAt(row, 2); // "Category Id" column index is 2 
+                categoryIds.add((Integer) categoryValue);  
             }
+            
+           boolean save = this.ticketsService.saveTicketsAndAssociations(ticketObj, categoryIds);
+           if(save){
+               AlertMessageDialogBox.showInfo("Ticket Purched Successfully.", "Success");
+           }
+            
             System.out.println("Purchase finalized!");
             dispose();
         }
@@ -229,10 +238,18 @@ class TicketDialog extends JDialog {
         }
     }
     
+    private int getCategoryId(String categoryName) {
+        Optional<Category> selectedCategoryObj = this.categoryService.getAllCategory().stream()
+                .filter(category -> category.getCategoryName().equals(categoryName))
+                .findFirst();
+
+        return selectedCategoryObj.map(Category::getCategoryId).orElse(-1);
+    }
+    
     private int findRowIndexByCategory(String category) {
     // Iterate through the table to find the row index with the given category
     for (int i = 0; i < tableModel.getRowCount(); i++) {
-        String existingCategory = (String) tableModel.getValueAt(i, 2); // Assuming category is in the third column
+        String existingCategory = (String) tableModel.getValueAt(i, 3); // Assuming category is in the third column
         if (existingCategory.equals(category)) {
             return i; // Return the row index if category exists
         }

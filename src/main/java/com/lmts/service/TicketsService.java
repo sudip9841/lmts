@@ -15,7 +15,7 @@ public class TicketsService {
     }
     
     
-    public boolean saveTicketsAndAssociations(List<Ticket> tickets, List<Association> associations){
-        return this.ticketsDao.saveTicketsAndAssociations(tickets, associations);
+    public boolean saveTicketsAndAssociations(Ticket ticket, List<Integer> categoryId){
+        return this.ticketsDao.saveTicketsAndAssociations(ticket, categoryId);
     }
 }
