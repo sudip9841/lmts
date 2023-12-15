@@ -8,6 +8,7 @@ com\lmts\MusicListCardJPanel.class
 com\lmts\LoginJPanel$3.class
 com\lmts\SignUpJPanel$1.class
 com\lmts\SignUpJPanel$5.class
+com\lmts\AdminDashboardJPanel$3.class
 com\lmts\Dao\MusicDao.class
 com\lmts\MusicListCardJPanel$1.class
 com\lmts\HomeJPanelMyTicketPanel.class

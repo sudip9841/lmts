@@ -1,17 +1,19 @@
 
 package com.lmts;
-import com.lmts.model.TicketHistory;
 import com.lmts.model.TicketHistoryAdmin;
 import com.lmts.service.TicketsService;
-import com.lmts.shared.UserDetailsSingleton;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 
 public class AdminDashboardJPanel extends javax.swing.JPanel {
@@ -19,6 +21,7 @@ public class AdminDashboardJPanel extends javax.swing.JPanel {
     private TicketsService ticketsService;
     private JTable ticketTable;
     private DefaultTableModel tableModel;
+    private JTextField searchField;
     /**
      * Creates new form AdminDashboardJPanel
      * @param cardLayout
@@ -78,8 +81,30 @@ public class AdminDashboardJPanel extends javax.swing.JPanel {
         // Create a JPanel for the Refresh button and add it to the layout
         JPanel buttonPanel = new JPanel();
         buttonPanel.add(refreshButton);
-        add(buttonPanel, BorderLayout.SOUTH);
+      
+        
+         // Create a JTextField for search input
+        searchField = new JTextField(20);
 
+        // Create a JButton for the search action
+        JButton searchButton = new JButton("Search");
+        searchButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Handle the search action
+                performSearch();
+            }
+        });
+
+        // Create a JPanel for the search components
+        JPanel searchPanel = new JPanel();
+        searchPanel.add(new JLabel("Search: "));
+        searchPanel.add(searchField);
+        searchPanel.add(searchButton);
+        // Add the search panel to the layout
+        add(searchPanel, BorderLayout.NORTH);
+//        add(buttonPanel, BorderLayout.NORTH);
+        
         // Add the container to the layout
         add(tableContainer, BorderLayout.CENTER);
     }
@@ -92,6 +117,22 @@ public class AdminDashboardJPanel extends javax.swing.JPanel {
             System.out.println(ticket.getMusicName());
             Object[] rowData = {ticket.getTicketId(), ticket.getMusicName(), ticket.getTicketType(), ticket.getTotalPrice(),ticket.getDate(),ticket.getTime()};
             this.tableModel.addRow(rowData);
+        }
+    }
+    
+    private void performSearch() {
+        String searchText = searchField.getText().trim().toLowerCase();
+
+        // Filter the table based on the search text
+        TableRowSorter<DefaultTableModel> rowSorter = new TableRowSorter<>(tableModel);
+        ticketTable.setRowSorter(rowSorter);
+
+        if (searchText.length() == 0) {
+            // If the search text is empty, show all rows
+            rowSorter.setRowFilter(null);
+        } else {
+            // Filter rows based on the search text
+            rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + searchText));
         }
     }
 
