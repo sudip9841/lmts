@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
+
 package com.lmts;
 
 import com.lmts.service.UserService;
@@ -9,10 +6,7 @@ import com.lmts.shared.AlertMessageDialogBox;
 import java.awt.*;
 import java.util.regex.Pattern;
 
-/**
- *
- * @author sudip
- */
+
 public class SignUpJPanel extends javax.swing.JPanel {
     
     private CardLayout cardLayout;

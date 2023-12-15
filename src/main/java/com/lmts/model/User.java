@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package com.lmts.model;
 
 public class User {
@@ -14,12 +11,6 @@ public class User {
         
     }
     
-//    public User(Integer id, String userName, String email, String password){
-//        this.id = id;
-//        this.userName = userName;
-//        this.email = email;
-//        this.password = password;
-//    }
     
     //setter methods
     public void setId(Integer id){

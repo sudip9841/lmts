@@ -3,7 +3,6 @@ package com.lmts.Dao;
 
 import com.lmts.helpers.DBUtils;
 import com.lmts.model.MusicModel;
-import com.lmts.model.User;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;

@@ -2,7 +2,6 @@
 package com.lmts.service;
 
 import com.lmts.Dao.TicketsDao;
-import com.lmts.model.Association;
 import com.lmts.model.Ticket;
 import com.lmts.model.TicketHistory;
 import com.lmts.model.TicketHistoryAdmin;
